@@ -4,6 +4,8 @@
 
 This mod will sort your saves on the Load Game screen by descending save time.
 
+![LoadGameWindow.jpg](https://raw.githubusercontent.com/GreyHak/dsp-save-sorter/master/LoadGameWindow.jpg)
+
 If you like this mod, please click the thumbs up at the [top of the page](https://dsp.thunderstore.io/package/GreyHak/DSP_Save_Game_Sorter/) (next to the Total rating).  That would be a nice thank you for me, and help other people to find a mod you enjoy.
 
 If you have issues with this mod, please report them on [GitHub](https://github.com/GreyHak/dsp-save-sorter/issues).  I try to respond within 12 hours.
