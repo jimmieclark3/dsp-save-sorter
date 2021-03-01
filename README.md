@@ -2,7 +2,7 @@
 
 **DSP Save Game Sorter** is a mod for the Unity game Dyson Sphere Program developed by Youthcat Studio and published by Gamera Game.  The game is available on [here](https://store.steampowered.com/app/1366540/Dyson_Sphere_Program/).
 
-This mod will sort your saves on the Load Game screen by decending save time.
+This mod will sort your saves on the Load Game screen by descending save time.
 
 If you like this mod, please click the thumbs up at the [top of the page](https://dsp.thunderstore.io/package/GreyHak/DSP_Save_Game_Sorter/) (next to the Total rating).  That would be a nice thank you for me, and help other people to find a mod you enjoy.
 
