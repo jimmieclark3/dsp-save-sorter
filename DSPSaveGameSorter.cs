@@ -31,13 +31,19 @@ namespace DSPSaveGameSorter
     {
         public const string pluginGuid = "greyhak.dysonsphereprogram.savegamesorter";
         public const string pluginName = "DSP Save Game Sorter";
-        public const string pluginVersion = "1.0.0";
+        public const string pluginVersion = "1.0.1";
         new internal static ManualLogSource Logger;
         Harmony harmony;
+
+        public static bool configSortLoadScreen = true;
+        public static bool configSortSaveScreen = true;
 
         public void Awake()
         {
             Logger = base.Logger;  // "C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\BepInEx\LogOutput.log"
+            configSortLoadScreen = Config.Bind<bool>("Config", "SortLoadScreen", configSortLoadScreen, "Sort load-game screen list.").Value;
+            configSortSaveScreen = Config.Bind<bool>("Config", "SortSaveScreen", configSortSaveScreen, "Sort save-game screen list.").Value;
+
             harmony = new Harmony(pluginGuid);
             harmony.PatchAll(typeof(DSPSaveGameSorter));
         }
@@ -57,17 +63,37 @@ namespace DSPSaveGameSorter
         [HarmonyPostfix, HarmonyPatch(typeof(UILoadGameWindow), "RefreshList")]
         public static void UILoadGameWindow_RefreshList_Postfix(ref UILoadGameWindow __instance)
         {
-            //List<UIGameSaveEntry> sorted = __instance.entries.OrderByDescending(e => e.fileDate).ToList();
-
-            __instance.entries.Sort(new GameSaveEntryReverseSorter());
-
-            for (int i = 0; i < __instance.entries.Count; )
+            if (configSortLoadScreen)
             {
-                UIGameSaveEntry entry = __instance.entries[i++];
-                entry.SetEntry(i, entry.fileInfo);
-            }
+                //List<UIGameSaveEntry> sorted = __instance.entries.OrderByDescending(e => e.fileDate).ToList();
 
-            __instance.OnSelectedChange();
+                __instance.entries.Sort(new GameSaveEntryReverseSorter());
+
+                for (int i = 0; i < __instance.entries.Count;)
+                {
+                    UIGameSaveEntry entry = __instance.entries[i++];
+                    entry.SetEntry(i, entry.fileInfo);
+                }
+
+                __instance.OnSelectedChange();
+            }
+        }
+
+        [HarmonyPostfix, HarmonyPatch(typeof(UISaveGameWindow), "RefreshList")]
+        public static void UISaveGameWindow_RefreshList_Postfix(ref UISaveGameWindow __instance)
+        {
+            if (configSortSaveScreen)
+            {
+                __instance.entries.Sort(new GameSaveEntryReverseSorter());
+
+                for (int i = 0; i < __instance.entries.Count;)
+                {
+                    UIGameSaveEntry entry = __instance.entries[i++];
+                    entry.SetEntry(i, entry.fileInfo);
+                }
+
+                __instance.OnSelectedChange();
+            }
         }
     }
 }
