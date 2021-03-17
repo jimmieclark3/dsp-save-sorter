@@ -31,18 +31,18 @@ namespace DSPSaveGameSorter
     {
         public const string pluginGuid = "greyhak.dysonsphereprogram.savegamesorter";
         public const string pluginName = "DSP Save Game Sorter";
-        public const string pluginVersion = "1.0.1";
+        public const string pluginVersion = "1.0.2";
         new internal static ManualLogSource Logger;
         Harmony harmony;
 
-        public static bool configSortLoadScreen = true;
-        public static bool configSortSaveScreen = true;
+        public static BepInEx.Configuration.ConfigEntry<bool> configSortLoadScreen;
+        public static BepInEx.Configuration.ConfigEntry<bool> configSortSaveScreen;
 
         public void Awake()
         {
             Logger = base.Logger;  // "C:\Program Files (x86)\Steam\steamapps\common\Dyson Sphere Program\BepInEx\LogOutput.log"
-            configSortLoadScreen = Config.Bind<bool>("Config", "SortLoadScreen", configSortLoadScreen, "Sort load-game screen list.").Value;
-            configSortSaveScreen = Config.Bind<bool>("Config", "SortSaveScreen", configSortSaveScreen, "Sort save-game screen list.").Value;
+            configSortLoadScreen = Config.Bind<bool>("Config", "SortLoadScreen", true, "Sort load-game screen list.");
+            configSortSaveScreen = Config.Bind<bool>("Config", "SortSaveScreen", true, "Sort save-game screen list.");
 
             harmony = new Harmony(pluginGuid);
             harmony.PatchAll(typeof(DSPSaveGameSorter));
@@ -63,7 +63,7 @@ namespace DSPSaveGameSorter
         [HarmonyPostfix, HarmonyPatch(typeof(UILoadGameWindow), "RefreshList")]
         public static void UILoadGameWindow_RefreshList_Postfix(ref UILoadGameWindow __instance)
         {
-            if (configSortLoadScreen)
+            if (configSortLoadScreen.Value)
             {
                 //List<UIGameSaveEntry> sorted = __instance.entries.OrderByDescending(e => e.fileDate).ToList();
 
@@ -82,7 +82,7 @@ namespace DSPSaveGameSorter
         [HarmonyPostfix, HarmonyPatch(typeof(UISaveGameWindow), "RefreshList")]
         public static void UISaveGameWindow_RefreshList_Postfix(ref UISaveGameWindow __instance)
         {
-            if (configSortSaveScreen)
+            if (configSortSaveScreen.Value)
             {
                 __instance.entries.Sort(new GameSaveEntryReverseSorter());
 
