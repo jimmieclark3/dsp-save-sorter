@@ -31,7 +31,7 @@ namespace DSPSaveGameSorter
     {
         public const string pluginGuid = "greyhak.dysonsphereprogram.savegamesorter";
         public const string pluginName = "DSP Save Game Sorter";
-        public const string pluginVersion = "1.0.2";
+        public const string pluginVersion = "1.0.3";
         new internal static ManualLogSource Logger;
         Harmony harmony;
 
@@ -69,10 +69,22 @@ namespace DSPSaveGameSorter
 
                 __instance.entries.Sort(new GameSaveEntryReverseSorter());
 
+                int displayIndex = 1;
                 for (int i = 0; i < __instance.entries.Count;)
                 {
                     UIGameSaveEntry entry = __instance.entries[i++];
-                    entry.SetEntry(i, entry.fileInfo);
+                    if (entry.fileInfo.Name.Equals(GameSave.LastExitFullName))
+                        entry.SetEntry(i, 0, entry.fileInfo);
+                    else if (entry.fileInfo.Name.Equals(GameSave.AutoSave0FullName))
+                        entry.SetEntry(i, -1, entry.fileInfo);
+                    else if (entry.fileInfo.Name.Equals(GameSave.AutoSave1FullName))
+                        entry.SetEntry(i, -2, entry.fileInfo);
+                    else if (entry.fileInfo.Name.Equals(GameSave.AutoSave2FullName))
+                        entry.SetEntry(i, -3, entry.fileInfo);
+                    else if (entry.fileInfo.Name.Equals(GameSave.AutoSave3FullName))
+                        entry.SetEntry(i, -4, entry.fileInfo);
+                    else
+                        entry.SetEntry(i, displayIndex++, entry.fileInfo);
                 }
 
                 __instance.OnSelectedChange();
@@ -89,7 +101,7 @@ namespace DSPSaveGameSorter
                 for (int i = 0; i < __instance.entries.Count;)
                 {
                     UIGameSaveEntry entry = __instance.entries[i++];
-                    entry.SetEntry(i, entry.fileInfo);
+                    entry.SetEntry(i, i, entry.fileInfo);
                 }
 
                 __instance.OnSelectedChange();
