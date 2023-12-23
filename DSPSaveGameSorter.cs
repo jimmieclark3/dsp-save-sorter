@@ -29,9 +29,9 @@ namespace DSPSaveGameSorter
     [BepInProcess("DSPGAME.exe")]
     public class DSPSaveGameSorter : BaseUnityPlugin
     {
-        public const string pluginGuid = "greyhak.dysonsphereprogram.savegamesorter";
+        public const string pluginGuid = "jclark.dysonsphereprogram.savegamesorter";
         public const string pluginName = "DSP Save Game Sorter";
-        public const string pluginVersion = "1.0.3";
+        public const string pluginVersion = "1.0.5";
         new internal static ManualLogSource Logger;
         Harmony harmony;
 
